@@ -1,6 +1,7 @@
-const { model, Schema } = require('mongoose')
+import { model, Schema } from 'mongoose'
+import { IBook } from '../types'
 
-const bookSchema = new Schema({
+const bookSchema = new Schema<IBook>({
   title: {
     type: String,
     required: true
@@ -31,4 +32,4 @@ const bookSchema = new Schema({
   }
 })
 
-module.exports = model('Book', bookSchema)
+export const BookModel = model('Book', bookSchema)
