@@ -2,7 +2,8 @@ const router = require('express').Router()
 const fileMiddleware = require('../middleware/file')
 const { incCounter, getCounter } = require('../api/counter')
 
-const Book = require('../models/Book')
+const container = require('../../container')
+const BooksRepository = require('../../BooksRepository')
 
 const props = [
   'title',
@@ -14,14 +15,16 @@ const props = [
 ]
 
 router.get('/view', async (_req, res) => {
-  const books = await Book.find()
+  const repo = container.get(BooksRepository)
+  const books = await repo.getBooks()
 
   res.render('books/index', { title: 'Книги', books })
 })
 
 router.get('/view/:id', async (req, res) => {
   const { id } = req.params
-  const book = await Book.findById(id)
+  const repo = container.get(BooksRepository)
+  const book = await repo.getBook(id)
 
   if (book) {
     await incCounter(id)
@@ -57,7 +60,8 @@ router.post('/create', fileMiddleware.single('fileBook'), async (req, res) => {
   }
 
   try {
-    const book = new Book(newBook)
+    const repo = container.get(BooksRepository)
+    const book = await repo.createBook(newBook)
 
     await book.save()
 
@@ -69,7 +73,8 @@ router.post('/create', fileMiddleware.single('fileBook'), async (req, res) => {
 
 router.get('/update/:id', async (req, res) => {
   const { id } = req.params
-  const book = await Book.findById(id)
+  const repo = container.get(BooksRepository)
+  const book = await repo.getBook(id)
 
   if (book) {
     res.render('books/update', {
@@ -86,7 +91,8 @@ router.post(
   fileMiddleware.single('fileBook'),
   async (req, res) => {
     const { id } = req.params
-    const book = await Book.findById(id)
+    const repo = container.get(BooksRepository)
+    const book = await repo.getBook(id)
 
     if (book) {
       const { body, file } = req
@@ -112,7 +118,9 @@ router.post('/delete/:id', async (req, res) => {
   const { id } = req.params
 
   try {
-    await Book.deleteOne({ _id: id })
+    const repo = container.get(BooksRepository)
+    await repo.deleteBook(id)
+
     res.status(200).redirect('/books/view')
   } catch (e) {
     console.error(e)

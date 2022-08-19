@@ -2,7 +2,8 @@ const router = require('express').Router()
 const fileMiddleware = require('../../middleware/file')
 const path = require('path')
 
-const Book = require('../../models/Book')
+const container = require('../../container')
+const BooksRepository = require('../../BooksRepository')
 
 const props = [
   'title',
@@ -14,14 +15,16 @@ const props = [
 ]
 
 router.get('/', async (_req, res) => {
-  const books = await Book.find().select('-__v')
+  const repo = container.get(BooksRepository)
+  const books = await repo.getBooks()
 
   res.status(200).json(books)
 })
 
 router.get('/:id', async (req, res) => {
   const { id } = req.params
-  const book = await Book.findById(id).select('-__v')
+  const repo = container.get(BooksRepository)
+  const book = await repo.getBook(id)
 
   if (book) {
     res.status(200).json(book)
@@ -46,7 +49,8 @@ router.post('/', fileMiddleware.single('fileBook'), async (req, res) => {
   }
 
   try {
-    const book = new Book(newBook)
+    const repo = container.get(BooksRepository)
+    const book = await repo.createBook(newBook)
 
     await book.save()
 
@@ -58,7 +62,8 @@ router.post('/', fileMiddleware.single('fileBook'), async (req, res) => {
 
 router.put('/:id', fileMiddleware.single('fileBook'), async (req, res) => {
   const { id } = req.params
-  const book = await Book.findById(id).select('-__v')
+  const repo = container.get(BooksRepository)
+  const book = await repo.getBook(id)
 
   if (book) {
     const { body, file } = req
@@ -83,7 +88,9 @@ router.delete('/:id', async (req, res) => {
   const { id } = req.params
 
   try {
-    await Book.deleteOne({ _id: id })
+    const repo = container.get(BooksRepository)
+    await repo.deleteBook(id)
+
     res.status(200).send('ok')
   } catch (e) {
     console.error(e)
@@ -93,7 +100,8 @@ router.delete('/:id', async (req, res) => {
 
 router.get('/:id/download', async (req, res) => {
   const { id } = req.params
-  const book = await Book.findById(id).select('-__v')
+  const repo = container.get(BooksRepository)
+  const book = await repo.getBook(id)
 
   if (book) {
     res.download(path.join(__dirname, '../..', book.fileBook), (err) => {

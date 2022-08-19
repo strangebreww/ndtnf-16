@@ -16,7 +16,7 @@ class BooksRepository {
 
   async getBook (id: string) {
     try {
-      return await BookModel.findById(id)
+      return await BookModel.findById(id).select('-__v')
     } catch (e) {
       console.error(e)
     }
@@ -24,7 +24,7 @@ class BooksRepository {
 
   async getBooks () {
     try {
-      return await BookModel.find()
+      return await BookModel.find().select('-__v')
     } catch (e) {
       console.error(e)
     }
@@ -32,9 +32,9 @@ class BooksRepository {
 
   async updateBook (id: string, book: IBook) {
     try {
-      const foundBook = await BookModel.findById(id)
+      const foundBook = await BookModel.findById(id).select('-__v')
 
-      await foundBook.update(book)
+      await foundBook?.update(book)
 
       return foundBook
     } catch (e) {
@@ -51,4 +51,4 @@ class BooksRepository {
   }
 }
 
-export default BooksRepository
+module.exports = BooksRepository

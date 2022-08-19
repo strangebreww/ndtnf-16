@@ -5,4 +5,4 @@ import BooksRepository from './BooksRepository'
 const container = new Container()
 container.bind(BooksRepository).toSelf()
 
-export { container }
+module.exports = container
