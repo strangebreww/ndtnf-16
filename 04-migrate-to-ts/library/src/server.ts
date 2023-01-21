@@ -41,7 +41,7 @@ app.use('/api/books', booksApiRouter)
 
 app.use(errorMiddleware)
 
-async function verify (username, password, done) {
+async function verify (username: string, password: string, done: any) {
   try {
     const user = await User.findOne({ login: username }).select('-__v')
 
@@ -59,7 +59,7 @@ async function verify (username, password, done) {
   }
 }
 
-const options = {
+const options: any = {
   usernameField: 'username',
   passwordField: 'password',
   passReqToCallback: false
@@ -67,7 +67,7 @@ const options = {
 
 passport.use('local', new LocalStrategy(options, verify))
 
-passport.serializeUser(function (user, cb) {
+passport.serializeUser(function (user: any, cb) {
   cb(null, user._id)
 })
 

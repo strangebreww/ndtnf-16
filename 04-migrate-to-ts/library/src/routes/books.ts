@@ -46,7 +46,7 @@ router.get('/create', (_req, res) => {
 })
 
 router.post('/create', fileMiddleware.single('fileBook'), async (req, res) => {
-  const newBook = {}
+  const newBook: any = {}
 
   const { body, file } = req
 
@@ -93,7 +93,7 @@ router.post(
   async (req, res) => {
     const { id } = req.params
     const repo = container.get(BooksRepository)
-    const book = await repo.getBook(id)
+    const book: any = await repo.getBook(id)
 
     if (book) {
       const { body, file } = req

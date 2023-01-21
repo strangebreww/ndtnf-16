@@ -1,6 +1,6 @@
 import http from 'http'
 
-function getCounter (id) {
+function getCounter (id: string) {
   const url = `${process.env.COUNTER_URL}/counter/${id}`
 
   return new Promise((resolve) => {
@@ -17,7 +17,9 @@ function getCounter (id) {
         try {
           resolve(rawData)
         } catch (e) {
-          console.error(e.message)
+          if (e instanceof Error) {
+            console.error(e.message)
+          }
         }
       })
     }).on('error', (e) => {
@@ -26,7 +28,7 @@ function getCounter (id) {
   })
 }
 
-function incCounter (id) {
+function incCounter (id: string) {
   const url = `${process.env.COUNTER_URL}/counter/${id}/incr`
 
   return new Promise((resolve) => {
@@ -50,7 +52,9 @@ function incCounter (id) {
         try {
           resolve(rawData)
         } catch (e) {
-          console.error(e.message)
+          if (e instanceof Error) {
+            console.error(e.message)
+          }
         }
       })
     })

@@ -15,7 +15,7 @@ router.post(
   passport.authenticate('local', {
     failureRedirect: '/api/user/login'
   }),
-  function (req, res) {
+  function (_req, res) {
     res.redirect('/')
   }
 )
@@ -53,7 +53,7 @@ router.get(
   function (req, res, next) {
     if (!req.isAuthenticated || !req.isAuthenticated()) {
       if (req.session) {
-        req.session.returnTo = req.originalUrl || req.url
+        (req.session as any).returnTo = req.originalUrl || req.url
       }
       return res.redirect('/api/user/login')
     }
@@ -65,7 +65,7 @@ router.get(
 )
 
 router.get('/logout', function (req, res) {
-  req.logout()
+  (req as any).logout()
   res.redirect('/')
 })
 
