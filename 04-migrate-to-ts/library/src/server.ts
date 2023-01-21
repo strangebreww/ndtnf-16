@@ -1,17 +1,18 @@
-const express = require('express')
-const mongoose = require('mongoose')
-const expressSession = require('express-session')
-const passport = require('passport')
-const LocalStrategy = require('passport-local').Strategy
-const bcrypt = require('bcrypt')
-const http = require('http')
-const { Server } = require('socket.io')
+import bcrypt from 'bcrypt'
+import express from 'express'
+import expressSession from 'express-session'
+import http from 'http'
+import mongoose from 'mongoose'
+import passport from 'passport'
+import passportLocal from 'passport-local'
+import { Server } from 'socket.io'
+import errorMiddleware from './middleware/error'
+import { booksApiRouter } from './routes/api/books'
+import { userApiRouter } from './routes/api/user'
+import { booksRouter } from './routes/books'
+import { indexRouter } from './routes/index'
 
-const errorMiddleware = require('./middleware/error')
-const indexRouter = require('./routes/index')
-const booksRouter = require('./routes/books')
-const userApiRouter = require('./routes/api/user')
-const booksApiRouter = require('./routes/api/books')
+const LocalStrategy = passportLocal.Strategy
 
 const User = require('./models/User')
 

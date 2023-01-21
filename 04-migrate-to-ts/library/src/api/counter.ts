@@ -1,4 +1,4 @@
-const http = require('http')
+import http from 'http'
 
 function getCounter (id) {
   const url = `${process.env.COUNTER_URL}/counter/${id}`
@@ -61,4 +61,4 @@ function incCounter (id) {
   })
 }
 
-module.exports = { incCounter, getCounter }
+export { incCounter, getCounter }

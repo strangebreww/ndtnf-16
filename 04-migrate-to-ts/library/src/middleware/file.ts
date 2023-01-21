@@ -1,4 +1,4 @@
-const multer = require('multer')
+import multer from 'multer'
 
 const storage = multer.diskStorage({
   destination (_req, _file, cb) {
@@ -19,4 +19,4 @@ const fileFilter = (_req, file, cb) => {
   }
 }
 
-module.exports = multer({ storage, fileFilter })
+export default multer({ storage, fileFilter })

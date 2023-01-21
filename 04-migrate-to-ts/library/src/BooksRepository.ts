@@ -1,7 +1,7 @@
 import { BookModel } from './models/Book'
 import { IBook } from './types'
 
-class BooksRepository {
+export class BooksRepository {
   async createBook (book: IBook) {
     try {
       const newBook = new BookModel(book)
@@ -50,5 +50,3 @@ class BooksRepository {
     }
   }
 }
-
-module.exports = BooksRepository

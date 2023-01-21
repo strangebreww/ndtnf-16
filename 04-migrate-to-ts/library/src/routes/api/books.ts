@@ -1,9 +1,10 @@
-const router = require('express').Router()
-const fileMiddleware = require('../../middleware/file')
-const path = require('path')
+import express from 'express'
+import path from 'path'
+import { BooksRepository } from '../../BooksRepository'
+import { container } from '../../container'
+import fileMiddleware from '../../middleware/file'
 
-const container = require('../../container')
-const BooksRepository = require('../../BooksRepository')
+const router = express.Router()
 
 const props = [
   'title',
@@ -114,4 +115,4 @@ router.get('/:id/download', async (req, res) => {
   }
 })
 
-module.exports = router
+export { router as booksApiRouter }

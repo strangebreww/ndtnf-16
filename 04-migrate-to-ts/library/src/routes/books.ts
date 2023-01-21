@@ -1,9 +1,10 @@
-const router = require('express').Router()
-const fileMiddleware = require('../middleware/file')
-const { incCounter, getCounter } = require('../api/counter')
+import express from 'express'
+import { getCounter, incCounter } from '../api/counter'
+import { BooksRepository } from '../BooksRepository'
+import { container } from '../container'
+import fileMiddleware from '../middleware/file'
 
-const container = require('../container')
-const BooksRepository = require('../../BooksRepository')
+const router = express.Router()
 
 const props = [
   'title',
@@ -128,4 +129,4 @@ router.post('/delete/:id', async (req, res) => {
   }
 })
 
-module.exports = router
+export { router as booksRouter }

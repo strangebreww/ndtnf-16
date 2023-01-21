@@ -1,9 +1,10 @@
-const router = require('express').Router()
-const passport = require('passport')
-const bcrypt = require('bcrypt')
+import bcrypt from 'bcrypt'
+import express from 'express'
+import passport from 'passport'
+import { bcryptConfig } from '../../bcryptConfig'
+import User from '../../models/User'
 
-const User = require('../../models/User')
-const bcryptConfig = require('../../bcryptConfig')
+const router = express.Router()
 
 router.get('/login', function (_req, res) {
   res.render('user/login')
@@ -68,4 +69,4 @@ router.get('/logout', function (req, res) {
   res.redirect('/')
 })
 
-module.exports = router
+export { router as userApiRouter }

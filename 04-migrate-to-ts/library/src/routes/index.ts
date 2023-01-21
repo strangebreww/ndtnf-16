@@ -1,7 +1,9 @@
-const router = require('express').Router()
+import express from 'express'
+
+const router = express.Router()
 
 router.get('/', (_req, res) => {
   res.render('index', { title: 'Главная' })
 })
 
-module.exports = router
+export { router as indexRouter }
