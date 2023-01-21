@@ -1,0 +1,45 @@
+version: "3.9"
+
+services:
+  storage:
+    image: redis
+
+  library:
+    build: ./library
+    ports:
+      - 3000:3000
+    environment:
+      - PORT=3000
+      - COUNTER_URL=http://counter:3001
+      - COOKIE_SECRET=${DB_NAME:-top_secret}
+    depends_on:
+      - counter
+
+  counter:
+    build: ./counter
+    ports:
+      - 3001:3001
+    environment:
+      - PORT=3001
+      - REDIS_URL=redis://storage
+    depends_on:
+      - storage
+
+  mongo:
+    image: mongo
+    restart: always
+    ports:
+      - 27017:27017
+    environment:
+      - MONGO_INITDB_DATABASE=${DB_NAME:-library_service}
+
+  mongo-express:
+    image: mongo-express
+    restart: always
+    ports:
+      - 8081:8081
+    environment:
+      - ME_CONFIG_MONGODB_ADMINUSERNAME=${DB_USERNAME:-admin}
+      - ME_CONFIG_MONGODB_ADMINPASSWORD=${DB_PASSWORD:-pass}
+    depends_on:
+      - mongo
