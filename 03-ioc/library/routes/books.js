@@ -2,7 +2,7 @@ const router = require('express').Router()
 const fileMiddleware = require('../middleware/file')
 const { incCounter, getCounter } = require('../api/counter')
 
-const container = require('../../container')
+const container = require('../container')
 const BooksRepository = require('../../BooksRepository')
 
 const props = [
