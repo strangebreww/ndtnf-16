@@ -1,4 +1,4 @@
-import { model, Schema } from 'mongoose'
+import { Document, model, Schema } from 'mongoose'
 import { IBook } from '../types'
 
 const bookSchema = new Schema<IBook>({
@@ -32,4 +32,4 @@ const bookSchema = new Schema<IBook>({
   }
 })
 
-export const BookModel = model('Book', bookSchema)
+export const BookModel = model<IBook & Document>('Book', bookSchema)

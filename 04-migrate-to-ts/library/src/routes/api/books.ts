@@ -3,6 +3,7 @@ import path from 'path'
 import { BooksRepository } from '../../BooksRepository'
 import { container } from '../../container'
 import fileMiddleware from '../../middleware/file'
+import { IBook } from '../../types'
 
 const router = express.Router()
 
@@ -13,7 +14,7 @@ const props = [
   'favorite',
   'fileCover',
   'fileName'
-]
+] as const
 
 router.get('/', async (_req, res) => {
   const repo = container.get(BooksRepository)
@@ -35,7 +36,7 @@ router.get('/:id', async (req, res) => {
 })
 
 router.post('/', fileMiddleware.single('fileBook'), async (req, res) => {
-  const newBook: any = {}
+  const newBook = {} as IBook
 
   const { body, file } = req
 
@@ -64,7 +65,7 @@ router.post('/', fileMiddleware.single('fileBook'), async (req, res) => {
 router.put('/:id', fileMiddleware.single('fileBook'), async (req, res) => {
   const { id } = req.params
   const repo = container.get(BooksRepository)
-  const book: any = await repo.getBook(id)
+  const book = await repo.getBook(id)
 
   if (book) {
     const { body, file } = req

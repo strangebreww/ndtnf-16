@@ -14,7 +14,7 @@ export class BooksRepository {
     }
   }
 
-  async getBook (id: string) {
+  async getBook (id: string): Promise<IBook> {
     try {
       return await BookModel.findById(id).select('-__v')
     } catch (e) {
@@ -22,7 +22,7 @@ export class BooksRepository {
     }
   }
 
-  async getBooks () {
+  async getBooks (): Promise<IBook[]> {
     try {
       return await BookModel.find().select('-__v')
     } catch (e) {
@@ -30,7 +30,7 @@ export class BooksRepository {
     }
   }
 
-  async updateBook (id: string, book: IBook) {
+  async updateBook (id: string, book: IBook): Promise<IBook> {
     try {
       const foundBook = await BookModel.findById(id).select('-__v')
 

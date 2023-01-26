@@ -7,14 +7,13 @@ import passport from 'passport'
 import passportLocal from 'passport-local'
 import { Server } from 'socket.io'
 import errorMiddleware from './middleware/error'
+import User from './models/User'
 import { booksApiRouter } from './routes/api/books'
 import { userApiRouter } from './routes/api/user'
 import { booksRouter } from './routes/books'
 import { indexRouter } from './routes/index'
 
 const LocalStrategy = passportLocal.Strategy
-
-const User = require('./models/User')
 
 const app = express()
 const server = http.createServer(app)
@@ -41,7 +40,7 @@ app.use('/api/books', booksApiRouter)
 
 app.use(errorMiddleware)
 
-async function verify (username: string, password: string, done: any) {
+async function verify (username: string, password: string, done: Function) {
   try {
     const user = await User.findOne({ login: username }).select('-__v')
 
@@ -59,15 +58,15 @@ async function verify (username: string, password: string, done: any) {
   }
 }
 
-const options: any = {
+const options = {
   usernameField: 'username',
   passwordField: 'password',
   passReqToCallback: false
-}
+} as const
 
 passport.use('local', new LocalStrategy(options, verify))
 
-passport.serializeUser(function (user: any, cb) {
+passport.serializeUser(function (user: Record<string, any>, cb) {
   cb(null, user._id)
 })
 

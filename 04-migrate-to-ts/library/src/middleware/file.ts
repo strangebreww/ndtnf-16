@@ -1,4 +1,4 @@
-import multer from 'multer'
+import multer, { FileFilterCallback } from 'multer'
 
 const storage = multer.diskStorage({
   destination (_req, _file, cb) {
@@ -11,7 +11,7 @@ const storage = multer.diskStorage({
 
 const allowedTypes = ['text/plain', 'text/html', 'application/pdf']
 
-const fileFilter = (_req: any, file: any, cb: any) => {
+const fileFilter = (_req: unknown, file: any, cb: FileFilterCallback) => {
   if (allowedTypes.includes(file.mimetype)) {
     cb(null, true)
   } else {
