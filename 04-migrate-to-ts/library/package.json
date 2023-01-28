@@ -5,9 +5,10 @@
 	"description": "",
 	"main": "./dist/server.js",
 	"scripts": {
-		"build": "tsc --project ./tsconfig.json --watch",
-		"start": "node server.js",
-		"dev": "nodemon -r dotenv/config server.js"
+    "build": "tsc --project ./tsconfig.json",
+		"build:watch": "npm run build -- --watch",
+		"start": "node ./dist/server.js",
+		"dev": "nodemon -r dotenv/config ./dist/server.js"
 	},
 	"keywords": [
 		"express",

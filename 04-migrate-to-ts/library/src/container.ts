@@ -1,8 +1,10 @@
-import { Container } from 'inversify'
+import { Container, decorate, injectable } from 'inversify'
 import 'reflect-metadata'
 import { BooksRepository } from './BooksRepository'
 
 const container = new Container()
-container.bind(BooksRepository).toSelf()
+
+decorate(injectable(), BooksRepository)
+container.bind(BooksRepository).toSelf().inSingletonScope()
 
 export { container }
